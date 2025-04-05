@@ -65,11 +65,11 @@ export function Footer() {
           <div>
             <h3 className="mb-4 text-sm font-semibold uppercase text-white">Connect</h3>
             <div className="flex space-x-4">
-              <Link href="#" className="hover:text-white transition-colors">
+              <Link href="https://github.com/Manish-Tamang" className="hover:text-white transition-colors">
                 <Github className="h-5 w-5" />
                 <span className="sr-only">GitHub</span>
               </Link>
-              <Link href="#" className="hover:text-white transition-colors">
+              <Link href="https://x.com/Manishtamangxyz" className="hover:text-white transition-colors">
                 <Twitter className="h-5 w-5" />
                 <span className="sr-only">Twitter</span>
               </Link>
