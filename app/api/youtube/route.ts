@@ -1,31 +1,93 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server";
+import { fetchWrapper, parseYouTubeDuration } from "@/lib/utils";
+import {
+  YouTubeSearchResponse,
+  YouTubeVideosResponse,
+  YouTubeSearchResult,
+} from "@/lib/types";
 
-// This is a mock implementation - in a real app, you would use the YouTube API
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const query = searchParams.get("query")
+const YOUTUBE_API_BASE_URL = "https://www.googleapis.com/youtube/v3";
+
+export async function GET(request: NextRequest): Promise<NextResponse> {
+  const { searchParams } = new URL(request.url);
+  const query = searchParams.get("query");
+  const apiKey = process.env.YOUTUBE_API_KEY;
 
   if (!query) {
-    return NextResponse.json({ error: "Missing query parameter" }, { status: 400 })
+    return NextResponse.json(
+      { error: "Missing 'query' parameter" },
+      { status: 400 }
+    );
+  }
+
+  if (!apiKey) {
+    return NextResponse.json(
+      { error: "Server configuration error" },
+      { status: 500 }
+    );
   }
 
   try {
-    // In a real implementation, you would search YouTube
-    // For now, we'll return mock data
-    return NextResponse.json({
-      results: Array.from({ length: 3 }, (_, i) => ({
-        videoId: `video-${i + 1}`,
-        title: `${query} - Extended Mix ${i + 1}`,
-        channel: `YouTube Channel ${(i % 3) + 1}`,
-        duration: `${Math.floor(Math.random() * 2) + 3}:${Math.floor(Math.random() * 60)
-          .toString()
-          .padStart(2, "0")}`,
-        thumbnailUrl: `/placeholder.svg?height=68&width=120`,
-      })),
-    })
-  } catch (error) {
-    console.error("Error searching YouTube:", error)
-    return NextResponse.json({ error: "Failed to search YouTube" }, { status: 500 })
+    const searchUrl = new URL(`${YOUTUBE_API_BASE_URL}/search`);
+    searchUrl.searchParams.set("part", "snippet");
+    searchUrl.searchParams.set("q", query);
+    searchUrl.searchParams.set("type", "video");
+    searchUrl.searchParams.set("maxResults", "3");
+    searchUrl.searchParams.set("key", apiKey);
+
+    const searchResponse = await fetchWrapper<YouTubeSearchResponse>(
+      searchUrl.toString()
+    );
+
+    if (!searchResponse.items || searchResponse.items.length === 0) {
+      return NextResponse.json({ results: [] });
+    }
+
+    const videoIds = searchResponse.items
+      .map((item) => item.id.videoId)
+      .join(",");
+
+    const videosUrl = new URL(`${YOUTUBE_API_BASE_URL}/videos`);
+    videosUrl.searchParams.set("part", "contentDetails");
+    videosUrl.searchParams.set("id", videoIds);
+    videosUrl.searchParams.set("key", apiKey);
+
+    const videosResponse = await fetchWrapper<YouTubeVideosResponse>(
+      videosUrl.toString()
+    );
+
+    const durationMap = new Map<string, string>();
+    videosResponse.items.forEach((item) => {
+      durationMap.set(
+        item.id,
+        parseYouTubeDuration(item.contentDetails.duration)
+      );
+    });
+
+    const results: YouTubeSearchResult[] = searchResponse.items.map((item) => {
+      const bestThumbnail =
+        item.snippet.thumbnails.medium || item.snippet.thumbnails.default;
+      return {
+        videoId: item.id.videoId,
+        title: item.snippet.title,
+        channel: item.snippet.channelTitle,
+        thumbnailUrl: bestThumbnail?.url || null,
+        duration: durationMap.get(item.id.videoId) || "N/A",
+      };
+    });
+
+    return NextResponse.json({ results });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to search YouTube";
+    if (error instanceof Error && error.message.includes("quotaExceeded")) {
+      return NextResponse.json(
+        { error: "YouTube API quota exceeded. Please try again later." },
+        { status: 429 }
+      );
+    }
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
+export type { YouTubeSearchResult };
 
