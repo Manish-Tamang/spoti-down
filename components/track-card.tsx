@@ -60,8 +60,8 @@ export function TrackCard({ track, index, showIndex = false, compact = false }: 
   }
 
   return (
-    <div className={`flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800/50 transition-colors ${compact ? "py-2" : "py-3"}`}>
-      {showIndex && <div className="w-6 text-center text-zinc-400 font-medium">{index}</div>}
+    <div className={`flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors ${compact ? "py-2" : "py-3"}`}>
+      {showIndex && <div className="w-6 text-center text-gray-600 font-medium">{index}</div>}
       <div className="relative flex-shrink-0">
         <Image
           src={track.imageUrl || "/placeholder.svg"}
@@ -73,15 +73,15 @@ export function TrackCard({ track, index, showIndex = false, compact = false }: 
       </div>
       <div className="flex-1 min-w-0">
         <Link href={`/track/${track.id}`} className="hover:underline">
-          <h3 className={`font-medium truncate ${compact ? "text-sm" : "text-base"}`}>{track.title}</h3>
+          <h3 className={`font-medium truncate text-gray-900 ${compact ? "text-sm" : "text-base"}`}>{track.title}</h3>
         </Link>
-        <p className={`text-zinc-400 truncate ${compact ? "text-xs" : "text-sm"}`}>{track.artist}</p>
+        <p className={`text-gray-600 truncate ${compact ? "text-xs" : "text-sm"}`}>{track.artist}</p>
       </div>
-      {!compact && <div className="text-sm text-zinc-400">{track.duration}</div>}
+      {!compact && <div className="text-sm text-gray-600">{track.duration}</div>}
       <Button
         size="icon"
         variant="ghost"
-        className="text-zinc-400 hover:text-white"
+        className="text-gray-600 hover:text-gray-900"
         onClick={handleDownload}
         disabled={isDownloading}
         title="Download MP3"
