@@ -1,16 +1,16 @@
 export default function TermsPage() {
   return (
-    <div className="bg-black text-white">
-      <section className="py-16 md:py-24 bg-gradient-to-b from-zinc-800 to-black">
+    <div className="bg-white text-gray-900">
+      <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center">Terms of Service</h1>
-          <p className="text-xl text-zinc-300 max-w-3xl mx-auto text-center">Last updated: April 5, 2025</p>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-center">Last updated: April 5, 2025</p>
         </div>
       </section>
 
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto prose prose-invert prose-zinc">
+          <div className="max-w-3xl mx-auto prose prose-gray">
             <h2>1. Introduction</h2>
             <p>
               Welcome to SpotiDown ("we," "our," or "us"). These Terms of Service ("Terms") govern your access to and
