@@ -26,7 +26,7 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         spotify: {
-          green: "#1DB954",
+          green: "#27F795",
           black: "#191414",
         },
         primary: {
