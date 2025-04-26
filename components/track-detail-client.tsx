@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Download, Play, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SearchResult } from "@/components/search-result";
+import { TrackSkeleton } from "@/components/track-skeleton";
 import type { TrackInfo } from "@/app/api/spotify/route";
 import type { YouTubeSearchResult } from "@/app/api/youtube/route";
 
@@ -17,13 +18,37 @@ export function TrackDetailClient({ track, initialSearchResults }: TrackDetailCl
     const [selectedVideoId, setSelectedVideoId] = useState<string | null>(initialSearchResults?.[0]?.videoId || null);
     const [isDownloading, setIsDownloading] = useState(false);
     const [searchResults, setSearchResults] = useState(initialSearchResults);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (initialSearchResults.length === 0) {
+            fetchYouTubeResults();
+        }
+    }, []);
+
+    const fetchYouTubeResults = async () => {
+        setIsLoading(true);
+        try {
+            const query = `${track.artist} - ${track.title}`;
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+            const res = await fetch(`${baseUrl}/api/youtube?query=${encodeURIComponent(query)}`);
+            if (res.ok) {
+                const data = await res.json();
+                setSearchResults(data.results || []);
+            }
+        } catch (error) {
+            console.error('Error fetching YouTube results:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleDownload = async () => {
         if (!selectedVideoId || isDownloading) return;
 
         setIsDownloading(true);
         try {
-            const filename = `${track.artist} - ${track.title}`.replace(/[^a-zA-Z0-9\-_ ]/g, '').replace(/\s+/g, '_');
+            const filename = `${track.artist} - ${track.title}`;
             window.location.href = `/api/download?videoId=${selectedVideoId}&filename=${encodeURIComponent(filename)}.mp3`;
             setTimeout(() => setIsDownloading(false), 4000);
         } catch (error) {
@@ -32,48 +57,27 @@ export function TrackDetailClient({ track, initialSearchResults }: TrackDetailCl
         }
     };
 
-    const handlePreview = () => {
-        if (track.previewUrl) {
-            try {
-                const audio = new Audio(track.previewUrl);
-                audio.play();
-            } catch (e) {
-                alert("Could not play preview audio.");
-            }
-        } else {
-            alert("No preview available for this track.");
-        }
-    };
+    if (isLoading) {
+        return <TrackSkeleton />;
+    }
 
     return (
-        <>
-            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-                <div className="relative w-64 h-64 flex-shrink-0">
+        <div className="space-y-8">
+            {/* Track Header */}
+            <div className="flex flex-col md:flex-row gap-6">
+                <div className="relative w-48 h-48 rounded-[4px] overflow-hidden border border-gray-200">
                     <Image
                         src={track.imageUrl || "/placeholder.svg"}
-                        alt={track.title}
+                        alt={`${track.title} cover art`}
                         fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority
-                        className="object-cover rounded-lg shadow-lg"
+                        className="object-cover"
                     />
                 </div>
-                <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                    <div className="text-sm font-medium uppercase text-zinc-400">Track</div>
-                    <h1 className="text-3xl md:text-4xl font-bold mt-2 mb-2">{track.title}</h1>
-                    <p className="text-xl text-zinc-300 mb-4">{track.artist}</p>
-                    <p className="text-zinc-400 text-sm mb-2">Album: {track.album}</p>
-                    <p className="text-zinc-400 text-sm mb-6">Duration: {track.duration}</p>
-                    <div className="flex gap-3">
-                        <Button
-                            className="bg-spotify-green hover:bg-spotify-green/90 text-black"
-                            onClick={handlePreview}
-                            disabled={!track.previewUrl}
-                            title={track.previewUrl ? "Play preview" : "No preview available"}
-                        >
-                            <Play className="mr-2 h-4 w-4 fill-current" />
-                            Preview
-                        </Button>
+                <div className="flex-1">
+                    <h1 className="text-2xl font-bold text-gray-900">{track.title}</h1>
+                    <p className="text-lg text-gray-600">{track.artist}</p>
+                    <p className="text-sm text-gray-500">{track.album}</p>
+                    <div className="mt-4">
                         <Button
                             variant="outline"
                             disabled={!selectedVideoId || isDownloading}
@@ -89,26 +93,36 @@ export function TrackDetailClient({ track, initialSearchResults }: TrackDetailCl
                     </div>
                 </div>
             </div>
-            <div className="mt-12">
-                <h2 className="text-xl font-semibold mb-4">Select Audio Source ({searchResults.length} found)</h2>
-                {searchResults.length === 0 && (
-                    <p className="text-zinc-400">No suitable audio sources found on YouTube.</p>
-                )}
-                <div className="space-y-4">
+
+            {/* YouTube Results */}
+            <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-gray-900">Available Downloads</h2>
+                <div className="grid gap-4">
                     {searchResults.map((result) => (
-                        <SearchResult
+                        <div
                             key={result.videoId}
-                            videoId={result.videoId}
-                            title={result.title}
-                            channel={result.channel}
-                            duration={result.duration}
-                            thumbnailUrl={result.thumbnailUrl || "/placeholder.svg"}
-                            selected={selectedVideoId === result.videoId}
-                            onSelect={() => setSelectedVideoId(result.videoId)}
-                        />
+                            className={`flex gap-4 p-4 border border-gray-200 rounded-[4px] transition-colors ${
+                                selectedVideoId === result.videoId ? 'bg-gray-50' : 'hover:bg-gray-50'
+                            }`}
+                            onClick={() => setSelectedVideoId(result.videoId)}
+                        >
+                            <div className="relative w-24 h-24 rounded-[4px] overflow-hidden">
+                                <Image
+                                    src={result.thumbnailUrl || "/placeholder.svg"}
+                                    alt={result.title}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="font-medium text-gray-900">{result.title}</h3>
+                                <p className="text-sm text-gray-600">{result.channel}</p>
+                                <p className="text-sm text-gray-500">{result.duration}</p>
+                            </div>
+                        </div>
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
