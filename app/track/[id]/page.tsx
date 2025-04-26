@@ -40,11 +40,11 @@ export default async function TrackPage({ params }: { params: { id: string } }) 
 
   if (!track) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-zinc-800 to-black text-white flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-white text-gray-900 flex flex-col items-center justify-center">
         <div className="container max-w-4xl mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Track Not Found</h1>
-          <p className="text-zinc-400 mb-6">Could not load data for the requested track ({trackId}).</p>
-          <Link href="/" className="inline-flex items-center text-spotify-green hover:text-white">
+          <p className="text-gray-600 mb-6">Could not load data for the requested track ({trackId}).</p>
+          <Link href="/" className="inline-flex items-center text-green-600 hover:text-green-700">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
           </Link>
@@ -54,9 +54,9 @@ export default async function TrackPage({ params }: { params: { id: string } }) 
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-800 to-black text-white">
+    <div className="min-h-screen bg-white text-gray-900">
       <div className="container max-w-4xl mx-auto px-4 py-8">
-        <Link href="/" className="inline-flex items-center text-zinc-400 hover:text-white mb-6">
+        <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Home
         </Link>
