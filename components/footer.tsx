@@ -1,10 +1,12 @@
 import Link from "next/link"
-import { Music2, Github, Twitter, Instagram } from "lucide-react"
+import { GitHub } from "@/components/icons/Github"
+import { XformerlyTwitter } from "@/components/icons/Twitter"
+import { Instagram } from "@/components/icons/Instagram"
 
 export function Footer() {
   return (
     <footer className="border-t border-gray-200 bg-white text-gray-600">
-      <div className="container mx-auto px-4 py-8">
+      <div className="max-w-[670px] mx-auto px-4 py-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           { }
           <div className="space-y-4">
@@ -66,14 +68,14 @@ export function Footer() {
             <h3 className="mb-4 text-sm font-semibold uppercase text-gray-900">Connect</h3>
             <div className="flex space-x-4">
               <Link href="https://github.com/Manish-Tamang" className="hover:text-gray-900 transition-colors">
-                <Github className="h-5 w-5" />
+                <GitHub className="h-5 w-5" />
                 <span className="sr-only">GitHub</span>
               </Link>
               <Link href="https://x.com/Manishtamangxyz" className="hover:text-gray-900 transition-colors">
-                <Twitter className="h-5 w-5" />
+                <XformerlyTwitter className="h-5 w-5" />
                 <span className="sr-only">Twitter</span>
               </Link>
-              <Link href="#" className="hover:text-gray-900 transition-colors">
+              <Link href="https://www.instagram.com/golecodes/" className="hover:text-gray-900 transition-colors">
                 <Instagram className="h-5 w-5" />
                 <span className="sr-only">Instagram</span>
               </Link>
