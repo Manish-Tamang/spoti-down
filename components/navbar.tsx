@@ -21,8 +21,8 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-sm">
-      <div className="container flex h-16 items-center justify-between px-4">
+    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-sm">
+      <div className="max-w-[670px] mx-auto flex h-16 items-center justify-between px-4 border-b border-gray-200">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-lg font-bold text-gray-900">SpotiDown</span>
         </Link>
@@ -32,9 +32,8 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm transition-colors hover:text-gray-900 ${
-                pathname === link.href ? "text-gray-900 font-medium" : "text-gray-600"
-              }`}
+              className={`text-sm transition-colors hover:text-gray-900 ${pathname === link.href ? "text-gray-900 font-medium" : "text-gray-600"
+                }`}
             >
               {link.label}
             </Link>
@@ -48,21 +47,22 @@ export function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-gray-200">
-          <nav className="flex flex-col space-y-4 p-4">
+        <div className="md:hidden">
+          <div className="max-w-[670px] mx-auto border-b border-gray-200">
+            <nav className="flex flex-col space-y-4 p-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm transition-colors hover:text-gray-900 ${
-                  pathname === link.href ? "text-gray-900 font-medium" : "text-gray-600"
-                }`}
+                className={`text-sm transition-colors hover:text-gray-900 ${pathname === link.href ? "text-gray-900 font-medium" : "text-gray-600"
+                  }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-          </nav>
+            </nav>
+          </div>
         </div>
       )}
     </header>
