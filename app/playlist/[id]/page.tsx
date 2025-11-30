@@ -27,7 +27,7 @@ export default async function PlaylistPage({ params }: { params: { id: string } 
   if (!playlist) {
     return (
       <div className="min-h-screen bg-white text-gray-900 flex flex-col items-center justify-center">
-        <div className="container max-w-5xl mx-auto px-4 py-8 text-center">
+        <div className="max-w-[670px] mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Playlist Not Found</h1>
           <p className="text-gray-600 mb-6">Could not load data for the requested playlist ({playlistId}). It might be private or does not exist.</p>
           <Link href="/" className="inline-flex items-center text-green-600 hover:text-green-700">
@@ -41,7 +41,7 @@ export default async function PlaylistPage({ params }: { params: { id: string } 
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <div className="container max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-[670px] mx-auto px-4 py-8">
         <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Home
