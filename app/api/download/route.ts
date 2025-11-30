@@ -93,15 +93,24 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const fileStream = createWriteStream(mp3Path);
         await pipeline(mp3Response.body as any, fileStream);
 
+        const fileStats = await fs.stat(mp3Path);
+        if (fileStats.size === 0) {
+          throw new Error("Downloaded file is empty");
+        }
+
         if (title && artist) {
-          const metadataResult = await editMP3Metadata(mp3Path, {
-            title: decodeURIComponent(title),
-            artist: decodeURIComponent(artist),
-            album: album ? decodeURIComponent(album) : "",
-            imageUrl: imageUrl ? decodeURIComponent(imageUrl) : null,
-          });
-          if (!metadataResult) {
-            console.warn("Failed to edit metadata, continuing with original file");
+          try {
+            const metadataResult = await editMP3Metadata(mp3Path, {
+              title: decodeURIComponent(title),
+              artist: decodeURIComponent(artist),
+              album: album ? decodeURIComponent(album) : "",
+              imageUrl: imageUrl ? decodeURIComponent(imageUrl) : null,
+            });
+            if (!metadataResult) {
+              console.warn("Failed to edit metadata, continuing with original file");
+            }
+          } catch (metadataError) {
+            console.warn("Metadata editing failed, continuing with original file:", metadataError);
           }
         }
 
@@ -156,6 +165,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Failed to initiate download";
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    console.error("Download route error:", errorMessage, error);
+    return NextResponse.json(
+      { 
+        error: errorMessage,
+        details: process.env.NODE_ENV === "development" ? (error instanceof Error ? error.stack : String(error)) : undefined
+      }, 
+      { status: 500 }
+    );
   }
 }
