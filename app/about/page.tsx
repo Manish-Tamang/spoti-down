@@ -1,92 +1,68 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Check, Shield, Zap } from "lucide-react"
+import { ArrowRight, Check, ExternalLink, Shield, Zap } from "lucide-react"
+import Image from "next/image"
+import { GitHub } from "@/components/icons/Github"
 
 export default function AboutPage() {
   return (
     <div className="bg-white text-gray-900">
-      {/* Hero Section */}
       <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 text-center">
+        <div className="max-w-[670px] mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">About SpotiDown</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're on a mission to make your favorite music accessible anywhere, anytime, even when you're offline.
+          <p className="text-xl text-gray-600 max-w-[670px] mx-auto">
+            Spotidown is a random project that i built during my freetime since i love spotify and i want to have my favorite music offline.
           </p>
         </div>
       </section>
 
-      {/* Our Story */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6">Our Story</h2>
+        <div className="max-w-[670px] mx-auto px-4">
+          <div className="max-w-[670px] mx-auto">
+            <h2 className="text-3xl font-bold mb-6">Why I Built SpotiDown</h2>
             <div className="space-y-4 text-gray-600">
               <p>
-                SpotiDown was born out of a simple need: to enjoy our favorite music without being constrained by
-                internet connectivity or subscription services.
-              </p>
-              <p>
-                As music enthusiasts, we understand the frustration of not being able to access your carefully curated
-                playlists when you're traveling, in areas with poor connectivity, or simply when you want to save your
-                mobile data.
-              </p>
-              <p>
-                Our team of developers and music lovers came together to create a solution that bridges this gap,
-                allowing you to take your music anywhere while maintaining the highest audio quality possible.
+                I built SpotiDown because I love Spotify and I want to have my favorite music offline.
+                while there are different websites that can download spotify tracks and playlists, they are not free and they are not always reliable and have annoying ads, redirects, no proper metadata, etc.
+                I also wanted to learn how to build a full-stack web application using modern technologies, and experiment with the Spotify API, YouTube API, and RapidAPI to handle music retrieval and metadata.
               </p>
             </div>
+            <section className="flex flex-col items-center justify-center mt-10 mb-6">
+              <Image
+                src="/profile.png"
+                alt="Manish Tamang Profile photo"
+                width={100}
+                height={100}
+                className="rounded-square border shadow-sm mb-3"
+              />
+              <h3 className="text-xl font-semibold mb-1">Developer Behind This Project</h3>
+              <p className="text-gray-600">
+                Made by{" "}
+                <a
+                  href="https://manishtamang.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-spotify-green underline font-medium hover:text-spotify-green/80"
+                >
+                  Manish Tamang
+                </a>
+              </p>
+            </section>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-12 text-center">What Makes Us Different</h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <Zap className="h-6 w-6 text-spotify-green" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Lightning Fast</h3>
-              <p className="text-gray-600">
-                Our advanced processing technology ensures quick conversions without compromising on quality.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <Check className="h-6 w-6 text-spotify-green" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">High Quality</h3>
-              <p className="text-gray-600">
-                We prioritize audio quality, ensuring your downloads sound as good as streaming.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <Shield className="h-6 w-6 text-spotify-green" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Secure & Private</h3>
-              <p className="text-gray-600">Your privacy matters. We don't store your music or personal information.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Try SpotiDown?</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Start converting your favorite Spotify tracks and playlists to MP3 today.
+        <div className="max-w-[670px] mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">Want to contribute to this project?</h2>
+          <p className="text-xl text-gray-600 max-w-[670px] mx-auto mb-8">
+            If you're a developer and would like to help, you can contribute to this project by visiting the GitHub repository.
           </p>
-          <Link href="/">
+          <Link href="https://github.com/Manish-Tamang/spoti-down" target="_blank" rel="noopener noreferrer">
             <Button size="lg" className="bg-spotify-green hover:bg-spotify-green/90 text-black">
-              Get Started
-              <ArrowRight className="ml-2 h-4 w-4" />
+              View on GitHub
+              <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>
