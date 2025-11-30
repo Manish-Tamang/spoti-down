@@ -2,91 +2,63 @@ export default function TermsPage() {
   return (
     <div className="bg-white text-gray-900">
       <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[670px] mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center">Terms of Service</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-center">Last updated: April 5, 2025</p>
+          <p className="text-xl text-gray-600 max-w-[670px] mx-auto text-center">Last updated: April 5, 2025</p>
         </div>
       </section>
 
       <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto prose prose-gray">
+        <div className="max-w-[670px] mx-auto px-4">
+          <div className="max-w-[670px] mx-auto prose prose-gray">
             <h2>1. Introduction</h2>
             <p>
-              Welcome to SpotiDown ("we," "our," or "us"). These Terms of Service ("Terms") govern your access to and
-              use of the SpotiDown website and services (collectively, the "Service").
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
             </p>
             <p>
-              By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of
-              the Terms, you may not access the Service.
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
 
             <h2>2. Use of the Service</h2>
             <p>
-              SpotiDown provides a service that allows users to convert Spotify tracks and playlists to MP3 format for
-              personal use. By using our Service, you agree to use it only for lawful purposes and in accordance with
-              these Terms.
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </p>
-            <p>You agree not to use the Service:</p>
+            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit:</p>
             <ul>
-              <li>In any way that violates any applicable national or international law or regulation.</li>
-              <li>For the purpose of exploiting, harming, or attempting to exploit or harm minors in any way.</li>
-              <li>
-                To transmit, or procure the sending of, any advertising or promotional material, including any "junk
-                mail," "chain letter," "spam," or any other similar solicitation.
-              </li>
-              <li>
-                To impersonate or attempt to impersonate SpotiDown, a SpotiDown employee, another user, or any other
-                person or entity.
-              </li>
-              <li>
-                To engage in any other conduct that restricts or inhibits anyone's use or enjoyment of the Service, or
-                which, as determined by us, may harm SpotiDown or users of the Service or expose them to liability.
-              </li>
+              <li>Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</li>
+              <li>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</li>
+              <li>Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</li>
+              <li>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</li>
+              <li>Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.</li>
             </ul>
 
             <h2>3. Intellectual Property</h2>
             <p>
-              The Service and its original content, features, and functionality are and will remain the exclusive
-              property of SpotiDown and its licensors. The Service is protected by copyright, trademark, and other laws
-              of both the United States and foreign countries.
+              At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
             </p>
             <p>
-              SpotiDown respects the intellectual property rights of others. We do not claim ownership of the music or
-              content that is converted through our Service. Users are responsible for ensuring they have the right to
-              download and use any content obtained through our Service.
+              Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
             </p>
 
             <h2>4. User Accounts</h2>
             <p>
-              When you create an account with us, you must provide information that is accurate, complete, and current
-              at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate
-              termination of your account on our Service.
+              Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
             </p>
             <p>
-              You are responsible for safeguarding the password that you use to access the Service and for any
-              activities or actions under your password. You agree not to disclose your password to any third party. You
-              must notify us immediately upon becoming aware of any breach of security or unauthorized use of your
-              account.
+              Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus.
             </p>
 
             <h2>5. Limitation of Liability</h2>
             <p>
-              In no event shall SpotiDown, nor its directors, employees, partners, agents, suppliers, or affiliates, be
-              liable for any indirect, incidental, special, consequential or punitive damages, including without
-              limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access
-              to or use of or inability to access or use the Service.
+              Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
             </p>
 
             <h2>6. Changes to Terms</h2>
             <p>
-              We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision
-              is material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What
-              constitutes a material change will be determined at our sole discretion.
+              Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
             </p>
             <p>
-              By continuing to access or use our Service after those revisions become effective, you agree to be bound
-              by the revised terms. If you do not agree to the new terms, please stop using the Service.
+              Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
             </p>
 
             <h2>7. Contact Us</h2>
