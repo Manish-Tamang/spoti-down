@@ -7,53 +7,58 @@ import {
 import { TrackCard } from "@/components/track-card";
 import type { PlaylistInfo as FullPlaylistInfo } from "@/app/api/spotify/route";
 import { Button } from "@/components/ui/button";
-import { Download, Loader2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Download, ExternalLink } from "lucide-react";
 import { useState } from "react";
+import { GitHub } from "./icons/Github";
 
 interface PlaylistDetailClientProps {
   playlist: FullPlaylistInfo;
 }
 
 export function PlaylistDetailClient({ playlist }: PlaylistDetailClientProps) {
-  const [isDownloadingAll, setIsDownloadingAll] = useState(false);
+  const [showApologyModal, setShowApologyModal] = useState(false);
 
-  const headerInfo: PlaylistHeaderInfo = {
+  const headerInfo = {
     id: playlist.id,
-    title: playlist.title,
+    name: playlist.name,
+    title: playlist.name,
     description: playlist.description,
     owner: playlist.ownerName,
     trackCount: playlist.trackCount,
     followers: playlist.followers,
-    imageUrl: playlist.imageUrl || "/placeholder.svg",
+    imageUrl: playlist.imageUrl,
+    spotifyUrl: playlist.spotifyUrl,
   };
 
-  const handleDownloadAll = async () => {
-    alert(
-      "Download All functionality is complex and not fully implemented in this example.\nIt would typically involve:\n1. Fetching all YouTube links.\n2. Downloading each track individually (perhaps in sequence or parallel with limits).\n3. Potentially zipping the files on the client or server-side."
-    );
+  const handleDownloadAll = () => {
+    if (!playlist) return;
+    setShowApologyModal(true);
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      <div className="container max-w-5xl mx-auto px-4 py-8">
-        <PlaylistHeader playlist={headerInfo}>
-          <div className="mt-6">
-            <Button
-              variant="outline"
-              onClick={handleDownloadAll}
-              disabled={isDownloadingAll || playlist.tracks.length === 0}
-            >
-              {isDownloadingAll ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
+    <>
+      <div className="min-h-screen bg-white text-gray-900">
+        <div className="max-w-[670px] mx-auto px-4 py-8">
+          <PlaylistHeader playlist={headerInfo}>
+            <div className="mt-6">
+              <Button
+                variant="outline"
+                onClick={handleDownloadAll}
+                disabled={playlist.tracks.length === 0}
+              >
                 <Download className="mr-2 h-4 w-4" />
-              )}
-              {isDownloadingAll
-                ? `Downloading (${playlist.tracks.length} tracks)...`
-                : "Download All"}
-            </Button>
-          </div>
-        </PlaylistHeader>
+                Download All
+              </Button>
+            </div>
+          </PlaylistHeader>
 
         <div className="mt-8">
           <div className="border-b border-gray-200 pb-2 mb-4">
@@ -89,7 +94,39 @@ export function PlaylistDetailClient({ playlist }: PlaylistDetailClientProps) {
             )}
           </div>
         </div>
+        </div>
       </div>
-    </div>
+
+      <Dialog open={showApologyModal} onOpenChange={setShowApologyModal}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Sorry! 😔</DialogTitle>
+            <DialogDescription className="text-base pt-2">
+              I haven't made this feature yet. The "Download All" functionality is still under development.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-gray-700 mb-4">
+              If you're a developer and would like to help, you can contribute to this feature by visiting the GitHub repository.
+            </p>
+            <a
+              href="https://github.com/Manish-Tamang/spoti-down"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-spotify-green hover:text-spotify-green/80 font-medium transition-colors"
+            >
+              <GitHub className="h-5 w-5" />
+              <span>View on GitHub</span>
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setShowApologyModal(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
