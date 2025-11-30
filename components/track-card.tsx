@@ -48,8 +48,17 @@ export function TrackCard({ track, index, showIndex = false, compact = false }: 
       const firstResult = youtubeData.results[0]
       const videoId = firstResult.videoId
       const filename = `${track.artist} - ${track.title}`.replace(/[^a-zA-Z0-9\-_]/g, '_')
+      
+      const params = new URLSearchParams({
+        videoId: videoId,
+        filename: `${filename}.mp3`,
+        title: track.title,
+        artist: track.artist,
+        album: track.album || "",
+        imageUrl: track.imageUrl || "",
+      })
 
-      window.location.href = `/api/download?videoId=${videoId}&filename=${encodeURIComponent(filename)}`
+      window.location.href = `/api/download?${params.toString()}`
 
       setTimeout(() => setIsDownloading(false), 3000)
     } catch (error) {
@@ -65,7 +74,7 @@ export function TrackCard({ track, index, showIndex = false, compact = false }: 
       <div className="relative flex-shrink-0">
         <Image
           src={track.imageUrl || "/placeholder.svg"}
-          alt={track.album}
+          alt={track.album || `${track.title} by ${track.artist} cover art` || "Track cover image"}
           width={compact ? 40 : 56}
           height={compact ? 40 : 56}
           className="rounded object-cover"
