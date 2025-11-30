@@ -5,8 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// --- NEW ---
-// Simple fetch wrapper for typed JSON responses and error handling
+
 export async function fetchWrapper<T>(
   url: string,
   options?: RequestInit
