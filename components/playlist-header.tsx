@@ -10,6 +10,7 @@ export interface PlaylistInfo {
   followers: number;
   imageUrl: string | null;
   spotifyUrl?: string;
+  name: string;
 }
 
 interface PlaylistHeaderProps {
@@ -30,7 +31,7 @@ export function PlaylistHeader({ playlist, children }: PlaylistHeaderProps) {
       <div className="relative w-48 h-48 flex-shrink-0">
         <Image
           src={playlist.imageUrl || "/placeholder.svg?height=300&width=300"}
-          alt={playlist.title}
+          alt={playlist.name || playlist.title || "Playlist cover image"}
           fill
           sizes="(max-width: 768px) 50vw, 200px"
           priority
@@ -39,7 +40,7 @@ export function PlaylistHeader({ playlist, children }: PlaylistHeaderProps) {
       </div>
       <div className="flex flex-col items-center md:items-start text-center md:text-left">
         <div className="text-sm font-medium uppercase text-gray-600">Playlist</div>
-        <h1 className="text-3xl md:text-5xl font-bold mt-2 mb-4 text-gray-900">{playlist.title}</h1>
+        <h1 className="text-3xl md:text-5xl font-bold mt-2 mb-4 text-gray-900">{playlist.name}</h1>
         {playlist.description && (
           <p className="text-gray-600 text-sm mb-2 max-w-2xl" dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(playlist.description) || '' }} />
         )}
