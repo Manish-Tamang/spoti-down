@@ -30,7 +30,7 @@ export function SearchResult({
       <div className="relative flex-shrink-0">
         <Image
           src={thumbnailUrl || "/placeholder.svg"}
-          alt={title}
+          alt={title || "Video thumbnail"}
           width={120}
           height={68}
           className="rounded object-cover"
