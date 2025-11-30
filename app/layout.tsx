@@ -1,18 +1,17 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google"; // Import JetBrains Mono
+import { Funnel_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { Toaster } from "@/components/ui/sonner";
 
-// Configure JetBrains Mono font
-const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"] });
+const FunnelSans = Funnel_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "SpotiDown - Spotify to MP3 Downloader",
   description: "Convert Spotify playlists and tracks to MP3 files",
-  generator: "v0.dev",
 };
 
 export default function RootLayout({
@@ -23,17 +22,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${jetBrainsMono.className} bg-neutral-100 text-black min-h-screen flex flex-col`}
+        className={`${FunnelSans.className} bg-neutral-100 text-black min-h-screen flex flex-col`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light" // Changed to light theme
+          defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
         >
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
