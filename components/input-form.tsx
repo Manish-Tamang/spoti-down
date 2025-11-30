@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Music, Loader2 } from "lucide-react";
+import { IoIosMusicalNotes } from "react-icons/io";
+import { toast } from "sonner";
 
 export function InputForm() {
   const [url, setUrl] = useState("");
@@ -25,14 +27,13 @@ export function InputForm() {
 
     if (match) {
       const [, type, id] = match;
-      // Simulate processing delay
       setTimeout(() => {
         router.push(`/${type}/${id}`);
         setIsLoading(false);
       }, 1500);
     } else {
       setIsLoading(false);
-      alert("Please enter a valid Spotify track or playlist URL");
+      toast.error("Please enter a valid Spotify track or playlist URL");
     }
   };
 
@@ -47,11 +48,11 @@ export function InputForm() {
         </label>
         <div className="flex gap-2">
           <div className="relative flex-1">
-            <Music className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            <IoIosMusicalNotes className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
             <Input
               id="spotify-url"
               placeholder="https://open.spotify.com/track/..."
-              className="pl-9 bg-white border-zinc-300 rounded-[4px] text-zinc-900 placeholder:text-zinc-400 focus:ring-2 focus:ring-spotify-green"
+              className="pl-9 bg-white border-zinc-300 rounded-square text-zinc-900 placeholder:text-zinc-400"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
@@ -59,7 +60,7 @@ export function InputForm() {
           <Button
             type="submit"
             disabled={isLoading || !url}
-            className="bg-spotify-green hover:bg-spotify-green/90 text-black rounded-[4px]"
+            className="bg-spotify-green hover:bg-spotify-green/90 text-black rounded-square"
           >
             {isLoading ? (
               <>
