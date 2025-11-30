@@ -49,7 +49,15 @@ export function TrackDetailClient({ track, initialSearchResults }: TrackDetailCl
         setIsDownloading(true);
         try {
             const filename = `${track.artist} - ${track.title}`;
-            window.location.href = `/api/download?videoId=${selectedVideoId}&filename=${encodeURIComponent(filename)}.mp3`;
+            const params = new URLSearchParams({
+                videoId: selectedVideoId,
+                filename: `${filename}.mp3`,
+                title: track.title,
+                artist: track.artist,
+                album: track.album || "",
+                imageUrl: track.imageUrl || "",
+            });
+            window.location.href = `/api/download?${params.toString()}`;
             setTimeout(() => setIsDownloading(false), 4000);
         } catch (error) {
             alert(`Failed to start download: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -68,7 +76,7 @@ export function TrackDetailClient({ track, initialSearchResults }: TrackDetailCl
                 <div className="relative w-48 h-48 rounded-[4px] overflow-hidden border border-gray-200">
                     <Image
                         src={track.imageUrl || "/placeholder.svg"}
-                        alt={`${track.title} cover art`}
+                        alt={track.title ? `${track.title} cover art` : "Track cover image"}
                         fill
                         className="object-cover"
                     />
@@ -109,7 +117,7 @@ export function TrackDetailClient({ track, initialSearchResults }: TrackDetailCl
                             <div className="relative w-24 h-24 rounded-[4px] overflow-hidden">
                                 <Image
                                     src={result.thumbnailUrl || "/placeholder.svg"}
-                                    alt={result.title}
+                                    alt={result.title || "YouTube video thumbnail"}
                                     fill
                                     className="object-cover"
                                 />
