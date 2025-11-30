@@ -141,7 +141,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
       const playlistInfo: PlaylistInfo = {
         id: playlistData.id,
-        title: playlistData.name,
+        name: playlistData.name,
         description: playlistData.description,
         ownerName: playlistData.owner.display_name,
         ownerUrl: playlistData.owner.external_urls?.spotify,
