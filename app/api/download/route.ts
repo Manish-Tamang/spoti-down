@@ -77,6 +77,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const data: RapidApiResponse = await response.json();
 
     if ("link" in data && data.status === "ok") {
+      if (!data.link || typeof data.link !== "string") {
+        return NextResponse.json(
+          { error: "Invalid download link received from service" },
+          { status: 502 }
+        );
+      }
+
       const tempDir = path.join(os.tmpdir(), `spotify-downloader-${Date.now()}`);
       const mp3Path = path.join(tempDir, filename);
       let tempDirCreated = false;
@@ -85,9 +92,29 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         await fs.mkdir(tempDir, { recursive: true });
         tempDirCreated = true;
 
-        const mp3Response = await fetch(data.link);
+        console.log("Downloading MP3 from:", data.link);
+        const mp3Response = await fetch(data.link, {
+          headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "Referer": "https://www.youtube.com/",
+          },
+        });
+        
         if (!mp3Response.ok) {
-          throw new Error(`Failed to download MP3: ${mp3Response.status}`);
+          const errorText = await mp3Response.text().catch(() => "");
+          console.error(`MP3 download failed: ${mp3Response.status}`, errorText.substring(0, 200));
+          
+          if (mp3Response.status === 404) {
+            return NextResponse.json(
+              { 
+                error: "The download link is invalid or expired. The video may not be available. Please try again.",
+                status: 404
+              },
+              { status: 404 }
+            );
+          }
+          
+          throw new Error(`MP3 download failed: ${mp3Response.status}. The download link may be invalid or expired.`);
         }
 
         const fileStream = createWriteStream(mp3Path);
