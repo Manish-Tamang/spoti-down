@@ -79,7 +79,7 @@ export interface SpotifyTokenResponse {
   
   export interface PlaylistInfo {
     id: string;
-    title: string;
+    name: string;
     description: string;
     ownerName: string;
     ownerUrl?: string;
