@@ -77,56 +77,59 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const data: RapidApiResponse = await response.json();
 
     if ("link" in data && data.status === "ok") {
-      // Download the MP3 file to a temporary location
       const tempDir = path.join(os.tmpdir(), `spotify-downloader-${Date.now()}`);
-      await fs.mkdir(tempDir, { recursive: true });
       const mp3Path = path.join(tempDir, filename);
+      let tempDirCreated = false;
 
       try {
-        // Download MP3 from the link
+        await fs.mkdir(tempDir, { recursive: true });
+        tempDirCreated = true;
+
         const mp3Response = await fetch(data.link);
         if (!mp3Response.ok) {
           throw new Error(`Failed to download MP3: ${mp3Response.status}`);
         }
 
-        // Save to temp file
         const fileStream = createWriteStream(mp3Path);
         await pipeline(mp3Response.body as any, fileStream);
 
-        // Edit metadata if track info is provided
         if (title && artist) {
-          await editMP3Metadata(mp3Path, {
+          const metadataResult = await editMP3Metadata(mp3Path, {
             title: decodeURIComponent(title),
             artist: decodeURIComponent(artist),
             album: album ? decodeURIComponent(album) : "",
             imageUrl: imageUrl ? decodeURIComponent(imageUrl) : null,
           });
+          if (!metadataResult) {
+            console.warn("Failed to edit metadata, continuing with original file");
+          }
         }
 
-        // Read the file and return it
         const mp3Buffer = await fs.readFile(mp3Path);
 
-        // Clean up temp file
-        await fs.unlink(mp3Path);
-        await fs.rmdir(tempDir);
+        await fs.unlink(mp3Path).catch(() => {});
+        await fs.rmdir(tempDir).catch(() => {});
 
-        // Return the MP3 file
-        return new NextResponse(Buffer.from(mp3Buffer as any), {
+        return new NextResponse(new Uint8Array(mp3Buffer), {
           headers: {
             "Content-Type": "audio/mpeg",
             "Content-Disposition": `attachment; filename="${filename}"`,
           },
         });
       } catch (error) {
-        // Clean up on error
         try {
-          await fs.unlink(mp3Path).catch(() => {});
-          await fs.rmdir(tempDir).catch(() => {});
-        } catch {}
+          if (tempDirCreated) {
+            await fs.unlink(mp3Path).catch(() => {});
+            await fs.rmdir(tempDir).catch(() => {});
+          }
+        } catch (cleanupError) {
+          console.error("Cleanup error:", cleanupError);
+        }
 
-        console.error("Error processing MP3:", error);
+        const errorMessage = error instanceof Error ? error.message : "Failed to process MP3";
+        console.error("Error processing MP3:", errorMessage, error);
         return NextResponse.json(
-          { error: error instanceof Error ? error.message : "Failed to process MP3" },
+          { error: errorMessage },
           { status: 500 }
         );
       }
